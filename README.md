@@ -486,15 +486,6 @@ See [LICENSE](./LICENSE) file for details.
 
 ---
 
-## 📞 Support & Contact
-
-- **Issues:** [GitHub Issues](https://github.com/devhub/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/devhub/discussions)
-- **Email:** support@devhub.dev
-- **Twitter:** [@DevHubApp](https://twitter.com/DevHubApp)
-
----
-
 ## 🎯 Vision & Roadmap
 
 DevHub is building the future of developer self-reflection and growth. Our mission:
@@ -514,6 +505,6 @@ DevHub is building the future of developer self-reflection and growth. Our missi
 
 **Built with ❤️ by developers, for developers**
 
-[Star us on GitHub](https://github.com/devhub/devhub) • [Follow @DevHubApp](https://twitter.com/DevHubApp)
+[Star us on GitHub](https://github.com/bishopcommander/DevHub)
 
 </div>
