@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useMusic, MOODS_META, DEFAULT_CURATED } from '../../context/MusicContext';
 
-const MoodMusic = () => {
+const MoodMusic = ({ setActive }) => {
   const {
     activeMood, setActiveMood,
     activeVideoId,
@@ -52,6 +52,24 @@ const MoodMusic = () => {
 
   return (
     <div className="space-y-6 p-4 sm:p-6">
+      
+      {/* ─── Breadcrumbs / Back navigation ────────────────────────── */}
+      {setActive && (
+        <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+          <button 
+            onClick={() => setActive('overview')} 
+            className="hover:text-cyan-405 transition-colors flex items-center gap-1.5"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="h-3.5 w-3.5">
+              <path d="M19 12H5" />
+              <path d="M12 19l-7-7 7-7" />
+            </svg>
+            Dashboard
+          </button>
+          <span>/</span>
+          <span className="text-slate-400">Mood Music</span>
+        </nav>
+      )}
 
       {toast && (
         <div className="fixed top-5 right-5 z-50 rounded-xl border border-cyan-500/30 bg-slate-900 px-5 py-3 text-xs text-cyan-300 font-semibold shadow-2xl backdrop-blur-md">

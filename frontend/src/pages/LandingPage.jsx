@@ -2,6 +2,7 @@ import React from 'react';
 import LandingNavbar from '../components/landing/LandingNavbar';
 import LandingSections from '../components/landing/LandingSections';
 import { useLandingData } from '../hooks/useLandingData';
+import { useTrackerStats } from '../hooks/useTrackerStats';
 import {
   landingFeatures,
   pricing,
@@ -21,7 +22,14 @@ const fallbackLandingData = {
 
 const LandingPage = () => {
   const { data, isError } = useLandingData();
-  const resolvedData = data ?? fallbackLandingData;
+  const { stats: liveStats, recentLogs } = useTrackerStats();
+
+  // Merge live tracker stats into resolved data — real data wins over fallback
+  const resolvedData = {
+    ...(data ?? fallbackLandingData),
+    // If the user has tracker data in localStorage, show it live
+    previewStats: liveStats ?? (data?.previewStats ?? fallbackLandingData.previewStats),
+  };
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -32,7 +40,7 @@ const LandingPage = () => {
         </div>
       )}
       <main>
-        <LandingSections data={resolvedData} />
+        <LandingSections data={resolvedData} recentLogs={recentLogs} />
       </main>
     </div>
   );

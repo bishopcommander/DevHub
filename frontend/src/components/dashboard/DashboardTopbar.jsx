@@ -2,14 +2,29 @@ import React from 'react';
 import { BellIcon, SearchIcon } from '../ui/Icons';
 import { useAuth } from '../../context/AuthContext';
 
-const DashboardTopbar = () => {
+const DashboardTopbar = ({ onToggleSidebar }) => {
   const { user } = useAuth();
 
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-slate-800 bg-slate-950/90 px-4 backdrop-blur sm:px-6">
-      <div className="flex w-full max-w-md items-center gap-3 rounded-xl border border-slate-800 bg-slate-900 px-3 py-2">
-        <SearchIcon />
-        <input className="w-full bg-transparent text-sm text-slate-100 outline-none placeholder:text-slate-500" placeholder="Search snippets, stats, tasks" />
+      <div className="flex w-full max-w-md items-center gap-3">
+        {/* Mobile menu toggle */}
+        <button
+          onClick={onToggleSidebar}
+          className="lg:hidden flex items-center justify-center p-2 rounded-lg text-slate-400 hover:bg-slate-900 hover:text-cyan-300 transition-colors"
+          aria-label="Toggle Sidebar"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="h-5 w-5">
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="6" x2="20" y2="6" />
+            <line x1="4" y1="18" x2="20" y2="18" />
+          </svg>
+        </button>
+
+        <div className="flex flex-1 items-center gap-3 rounded-xl border border-slate-800 bg-slate-900 px-3 py-2">
+          <SearchIcon />
+          <input className="w-full bg-transparent text-sm text-slate-100 outline-none placeholder:text-slate-500" placeholder="Search snippets, stats, tasks" />
+        </div>
       </div>
       <div className="ml-4 flex items-center gap-4">
         <button aria-label="Notifications" className="relative rounded-lg p-2 text-slate-300 hover:bg-slate-900 hover:text-cyan-300">

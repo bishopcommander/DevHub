@@ -2,10 +2,154 @@ import React, { useMemo, useState } from 'react';
 import Card from '../ui/Card';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useAuth } from '../../context/AuthContext';
+import { useMusic, MOODS_META } from '../../context/MusicContext';
 import GitHubAnalyzer from './GitHubAnalyzer';
 import BuildInPublicTracker from './BuildInPublicTracker';
 import DevBingo from './DevBingo';
 import MoodMusic from './MoodMusic';
+import StackDecider from './StackDecider';
+import AIExplainer from './AIExplainer';
+
+// ── Mini Mood Music widget for Overview grid ─────────────────────────
+const MoodMusicMiniWidget = ({ setActive }) => {
+  const {
+    activeMood, setActiveMood,
+    activeVideoId, setActiveVideoId,
+    isPlaying,
+    getTracksForMood, playTrack, stopPlayer,
+  } = useMusic();
+
+  const tracks = getTracksForMood(activeMood);
+  const currentIndex = tracks.findIndex(t => t.id === activeVideoId);
+  const currentTrack = tracks[currentIndex] || tracks[0];
+  const moodMeta = MOODS_META[activeMood] || MOODS_META.focus;
+
+  const changeMood = (newMood) => {
+    const tracksForNewMood = getTracksForMood(newMood);
+    const firstTrackId = tracksForNewMood[0]?.id;
+    if (isPlaying) {
+      if (firstTrackId) {
+        playTrack(firstTrackId, newMood);
+      }
+    } else {
+      setActiveMood(newMood);
+      if (firstTrackId) {
+        setActiveVideoId(firstTrackId);
+      }
+    }
+  };
+
+  const handlePrev = () => {
+    const prevIdx = currentIndex <= 0 ? tracks.length - 1 : currentIndex - 1;
+    playTrack(tracks[prevIdx].id, activeMood);
+  };
+
+  const handleNext = () => {
+    const nextIdx = currentIndex >= tracks.length - 1 ? 0 : currentIndex + 1;
+    playTrack(tracks[nextIdx].id, activeMood);
+  };
+
+  const handlePlayPause = () => {
+    if (isPlaying) {
+      stopPlayer();
+    } else if (currentTrack) {
+      playTrack(currentTrack.id, activeMood);
+    }
+  };
+
+  return (
+    <Card className="p-5 flex flex-col justify-between min-h-[340px]">
+      <div>
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-slate-100">Mood Music</h3>
+          <span className={`rounded-full ${moodMeta.badge} px-2 py-0.5 text-[9px] font-bold uppercase`}>
+            {moodMeta.emoji} {moodMeta.label}
+          </span>
+        </div>
+
+        {/* Mood Shifter Control Row */}
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {Object.entries(MOODS_META).map(([moodKey, meta]) => {
+            const isActive = activeMood === moodKey;
+            const shortLabel = moodKey === 'focus' ? 'Focus' 
+                             : moodKey === 'debug' ? 'Debug' 
+                             : moodKey === 'burnout' ? 'Recovery' 
+                             : 'Chill';
+            return (
+              <button
+                key={moodKey}
+                type="button"
+                onClick={() => changeMood(moodKey)}
+                className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold border transition-all ${
+                  isActive
+                    ? `border-cyan-500/30 bg-cyan-500/10 text-cyan-400 font-extrabold`
+                    : 'border-slate-800 bg-slate-950/20 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                }`}
+              >
+                <span>{meta.emoji}</span>
+                <span>{shortLabel}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="mt-4 rounded-xl border border-slate-800 bg-slate-900 p-4">
+          <p className="text-xs uppercase tracking-widest text-slate-400">
+            {isPlaying ? 'Now Playing' : 'Ready to Play'}
+          </p>
+          <p className="mt-2 text-lg font-semibold text-cyan-300 truncate">
+            {currentTrack?.name || 'No track selected'}
+          </p>
+          <p className="text-sm text-slate-400 truncate">
+            {currentTrack?.desc || 'Select a mood to start'}
+          </p>
+
+          {/* Playing indicator */}
+          <div className="mt-4 h-1.5 rounded-full bg-slate-800 overflow-hidden">
+            {isPlaying ? (
+              <div className="h-1.5 rounded-full bg-cyan-400 animate-pulse" style={{ width: '60%' }} />
+            ) : (
+              <div className="h-1.5 rounded-full bg-slate-700" style={{ width: '0%' }} />
+            )}
+          </div>
+
+          {/* Controls */}
+          <div className="mt-4 flex gap-2">
+            <button
+              onClick={handlePrev}
+              className="rounded-lg border border-slate-700 px-3 py-2 text-xs text-slate-200 hover:bg-slate-800 transition-colors"
+            >
+              Prev
+            </button>
+            <button
+              onClick={handlePlayPause}
+              className={`rounded-lg px-3 py-2 text-xs font-semibold transition-colors ${
+                isPlaying
+                  ? 'bg-rose-500 hover:bg-rose-400 text-white'
+                  : 'bg-cyan-400 hover:bg-cyan-300 text-slate-950'
+              }`}
+            >
+              {isPlaying ? 'Stop' : 'Play'}
+            </button>
+            <button
+              onClick={handleNext}
+              className="rounded-lg border border-slate-700 px-3 py-2 text-xs text-slate-200 hover:bg-slate-800 transition-colors"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button
+        onClick={() => setActive('music')}
+        className="w-full mt-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/20 py-2.5 text-xs font-semibold text-cyan-400 transition-colors shadow-sm"
+      >
+        Open Mood Studio →
+      </button>
+    </Card>
+  );
+};
 
 const DashboardPanels = ({ active, data, setActive }) => {
   const { user, connectGitHub, disconnectGitHub } = useAuth();
@@ -112,23 +256,34 @@ const DashboardPanels = ({ active, data, setActive }) => {
 
   // GitHub Analyzer gets its own full-width layout
   if (active === 'analyzer') {
-    return <GitHubAnalyzer />;
+    return <GitHubAnalyzer setActive={setActive} />;
   }
 
   // Build-in-Public Tracker gets its own full-width layout
   if (active === 'tracker') {
-    return <BuildInPublicTracker />;
+    return <BuildInPublicTracker setActive={setActive} />;
   }
 
   // Dev Bingo gets its own full-width layout
   if (active === 'bingo') {
-    return <DevBingo />;
+    return <DevBingo setActive={setActive} />;
   }
 
   // Mood Music gets its own full-width layout
   if (active === 'music') {
-    return <MoodMusic />;
+    return <MoodMusic setActive={setActive} />;
   }
+
+  // Stack Decider gets its own full-width layout
+  if (active === 'decider') {
+    return <StackDecider setActive={setActive} />;
+  }
+
+  // AI Explainer gets its own full-width layout
+  if (active === 'explainer') {
+    return <AIExplainer setActive={setActive} />;
+  }
+
 
   return (
     <div className="flex flex-col gap-5 p-4 sm:p-6">
@@ -285,22 +440,7 @@ const DashboardPanels = ({ active, data, setActive }) => {
         )}
 
         {items.includes('music') && (
-          <Card className="p-5">
-            <h3 className="text-lg font-semibold text-slate-100">Mood Music</h3>
-            <div className="mt-4 rounded-xl border border-slate-800 bg-slate-900 p-4">
-              <p className="text-xs uppercase tracking-widest text-slate-400">Now Playing</p>
-              <p className="mt-2 text-lg font-semibold text-cyan-300">{data.music.title}</p>
-              <p className="text-sm text-slate-400">{data.music.artist}</p>
-              <div className="mt-4 h-1.5 rounded-full bg-slate-800">
-                <div className="h-1.5 rounded-full bg-cyan-400" style={{ width: `${data.music.progressPercent}%` }} />
-              </div>
-              <div className="mt-4 flex gap-2">
-                <button className="rounded-lg border border-slate-700 px-3 py-2 text-xs text-slate-200 hover:bg-slate-800">Prev</button>
-                <button className="rounded-lg bg-cyan-400 px-3 py-2 text-xs font-semibold text-slate-950">Pause</button>
-                <button className="rounded-lg border border-slate-700 px-3 py-2 text-xs text-slate-200 hover:bg-slate-800">Next</button>
-              </div>
-            </div>
-          </Card>
+          <MoodMusicMiniWidget setActive={setActive} />
         )}
       </div>
 

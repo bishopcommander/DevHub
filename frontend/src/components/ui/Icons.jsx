@@ -51,11 +51,30 @@ export const GitHubIcon = () => (
   </svg>
 );
 
+export const StackIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={iconClass} aria-hidden="true">
+    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+  </svg>
+);
+
+export const BrainIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={iconClass} aria-hidden="true">
+    <path d="M9.5 2a4.5 4.5 0 014.5 4.5v.25a4.5 4.5 0 01-4.5 4.5A4.5 4.5 0 015 6.75V6.5A4.5 4.5 0 019.5 2z" />
+    <path d="M14.5 2a4.5 4.5 0 014.5 4.5v.25a4.5 4.5 0 01-4.5 4.5" />
+    <path d="M9.5 11.25A4.5 4.5 0 005 15.75V16a4.5 4.5 0 004.5 4.5 4.5 4.5 0 004.5-4.5v-.25a4.5 4.5 0 00-4.5-4.5z" />
+    <path d="M14.5 11.25a4.5 4.5 0 014.5 4.5V16a4.5 4.5 0 01-4.5 4.5" />
+    <line x1="9.5" y1="6.75" x2="9.5" y2="11.25" />
+    <line x1="14.5" y1="6.75" x2="14.5" y2="11.25" />
+    <line x1="5" y1="11" x2="19" y2="11" />
+  </svg>
+);
+
 export const SidebarIcons = {
   overview: SparkIcon,
-  explainer: SparkIcon,
+  explainer: BrainIcon,
   tracker: ClockIcon,
   bingo: GridIcon,
   music: MusicIcon,
   analyzer: GitHubIcon,
+  decider: StackIcon,
 };
