@@ -31,10 +31,10 @@ const DashboardSidebar = ({ active, setActive }) => {
         className="mb-6 flex items-center gap-2 px-2 flex-shrink-0 group"
         title="Back to Home"
       >
-        <div className="grid h-8 w-8 place-content-center rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 text-xs font-black text-slate-950 group-hover:shadow-lg group-hover:shadow-cyan-500/25 transition-shadow">
+        <div className="grid h-8 w-8 place-content-center rounded-lg bg-gradient-to-br from-amber-500 to-emerald-600 text-xs font-black text-stone-950 group-hover:shadow-lg group-hover:shadow-amber-500/25 transition-shadow">
           DH
         </div>
-        <span className="font-semibold text-slate-100 group-hover:text-cyan-300 transition-colors">DevHub</span>
+        <span className="font-semibold text-slate-100 group-hover:text-amber-300 transition-colors">Dev<span className="text-amber-400">Hub</span></span>
       </Link>
 
       {/* Main navigation */}
@@ -47,13 +47,13 @@ const DashboardSidebar = ({ active, setActive }) => {
               onClick={() => setActive(item.key)}
               className={clsx(
                 'flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition',
-                active === item.key ? 'bg-slate-850 text-cyan-300 font-semibold border-l-2 border-cyan-400' : 'text-slate-300 hover:bg-slate-900 hover:text-slate-100'
+                active === item.key ? 'bg-slate-850 text-amber-300 font-semibold border-l-2 border-amber-400' : 'text-slate-300 hover:bg-slate-900 hover:text-slate-100'
               )}
             >
               <Icon />
               <span className="flex-1">{item.label}</span>
               {item.badge && (
-                <span className="rounded-full bg-cyan-500/15 border border-cyan-500/30 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider text-cyan-400">
+                <span className="rounded-full bg-amber-500/15 border border-amber-500/30 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider text-amber-400">
                   {item.badge}
                 </span>
               )}
