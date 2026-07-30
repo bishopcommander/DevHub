@@ -9,6 +9,7 @@ import DevBingo from './DevBingo';
 import MoodMusic from './MoodMusic';
 import StackDecider from './StackDecider';
 import AIExplainer from './AIExplainer';
+import Dashboard3DCanvas from './Dashboard3DCanvas';
 
 // ── Mini Mood Music widget for Overview grid ─────────────────────────
 const MoodMusicMiniWidget = ({ setActive }) => {
@@ -287,6 +288,22 @@ const DashboardPanels = ({ active, data, setActive }) => {
 
   return (
     <div className="flex flex-col gap-5 p-4 sm:p-6">
+    
+      {/* ── 3D Activity Matrix (Microservice 8083) ─────────────── */}
+      {active === 'overview' && data?.visual3dBarNodes && (
+        <Card className="p-0 overflow-hidden">
+           <div className="p-5 border-b border-slate-800/80 flex items-center justify-between bg-slate-900/50">
+             <div>
+               <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                 <span>Developer Activity Matrix</span>
+                 <span className="rounded-full bg-indigo-500/10 border border-indigo-500/30 px-2 py-0.5 text-[9px] font-extrabold uppercase text-indigo-400">Microservice :8083</span>
+               </h3>
+               <p className="text-xs text-slate-400 mt-1">Interactive 3D representation of your weekly deep work focus hours.</p>
+             </div>
+           </div>
+           <Dashboard3DCanvas barNodes={data.visual3dBarNodes} />
+        </Card>
+      )}
 
       {/* ── GitHub integration warning banner ─────────────────────── */}
       {user && !user.githubConnected && (

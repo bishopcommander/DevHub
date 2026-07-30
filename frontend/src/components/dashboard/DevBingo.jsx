@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Card from '../ui/Card';
 import { useAuth } from '../../context/AuthContext';
 import { useGitHubAnalyzer } from '../../hooks/useGitHubAnalyzer';
+import Tracker3DCanvas from './Tracker3DCanvas';
+import { fetchTrackerData } from '../../api/devhubApi';
 
 // Relatable, humorous developer habits pool (50 items)
 const BINGO_TASKS = [
@@ -67,6 +69,17 @@ const DevBingo = ({ setActive }) => {
   const [hasWon, setHasWon] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [copied, setCopied] = useState(false);
+  const [viewMode, setViewMode] = useState('CLASSIC');
+  const [trackerNodes, setTrackerNodes] = useState([]);
+
+  // Fetch tracker 3D nodes from microservice
+  useEffect(() => {
+    fetchTrackerData().then(data => {
+      if (data?.visual3dAchievementNodes?.length > 0) {
+        setTrackerNodes(data.visual3dAchievementNodes);
+      }
+    }).catch(() => {});
+  }, []);
 
   // Custom Board Builder states
   const [showCustomModal, setShowCustomModal] = useState(false);
@@ -325,7 +338,7 @@ const DevBingo = ({ setActive }) => {
         <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500">
           <button 
             onClick={() => setActive('overview')} 
-            className="hover:text-cyan-405 transition-colors flex items-center gap-1.5"
+            className="hover:text-violet-400 transition-colors flex items-center gap-1.5"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="h-3.5 w-3.5">
               <path d="M19 12H5" />
@@ -334,13 +347,15 @@ const DevBingo = ({ setActive }) => {
             Dashboard
           </button>
           <span>/</span>
-          <span className="text-slate-400">Dev Bingo Studio</span>
+          <span className="text-slate-400">Microservice Features</span>
+          <span>/</span>
+          <span className="text-violet-400 font-bold">Dev Bingo 3D (Port :8084)</span>
         </nav>
       )}
 
       {/* Toast Alert pop-up */}
       {toastMessage && (
-        <div className="fixed top-5 right-5 z-50 rounded-xl border border-cyan-500/35 bg-slate-900 px-5 py-3 text-xs text-cyan-300 font-semibold shadow-2xl backdrop-blur-md animate-fade-in">
+        <div className="fixed top-5 right-5 z-50 rounded-xl border border-violet-500/35 bg-slate-900 px-5 py-3 text-xs text-violet-300 font-semibold shadow-2xl backdrop-blur-md animate-fade-in">
           {toastMessage}
         </div>
       )}
@@ -348,35 +363,83 @@ const DevBingo = ({ setActive }) => {
       {/* ─── Header ──────────────────────────────────────────────── */}
       <div className="flex flex-col md:flex-row items-stretch justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-white tracking-wide">Developer habits Bingo</h2>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="rounded-full bg-violet-500/10 border border-violet-500/30 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-violet-400">Microservice Feature #4</span>
+            <span className="rounded-full bg-emerald-500/10 border border-emerald-500/40 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+              Port :8084 Active
+            </span>
+          </div>
+          <h2 className="text-xl font-bold text-white tracking-wide mt-2">Developer Habits Bingo</h2>
           <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-            Turn your daily code cycles into a shareable game. Click tiles to mark them manually, or auto-scan your GitHub profile metrics.
+            Turn your daily code cycles into a shareable game. Now with a 3D Achievement Cube visualization!
           </p>
         </div>
 
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">
+          {/* View Mode Toggle */}
+          <div className="flex items-center gap-1 rounded-xl bg-slate-950/80 p-1.5 border border-slate-800">
+            <button
+              onClick={() => setViewMode('CLASSIC')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                viewMode === 'CLASSIC' ? 'bg-violet-500 text-slate-950 shadow-md' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >📋 Classic</button>
+            <button
+              onClick={() => setViewMode('3D')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                viewMode === '3D' ? 'bg-violet-500 text-slate-950 shadow-md' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >🎲 3D Cube</button>
+            <button
+              onClick={() => setViewMode('SPLIT')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                viewMode === 'SPLIT' ? 'bg-violet-500 text-slate-950 shadow-md' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >📐 Split</button>
+          </div>
+
           <button
             onClick={handleGitHubScan}
-            className="flex items-center gap-1.5 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-cyan-500/30 px-4 py-2.5 text-xs font-bold text-cyan-400 transition-colors uppercase tracking-wider"
+            className="flex items-center gap-1.5 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-violet-500/30 px-4 py-2.5 text-xs font-bold text-violet-400 transition-colors uppercase tracking-wider"
           >
-            <span>🔄 Scan GitHub Activity</span>
+            <span>🔄 Scan GitHub</span>
           </button>
 
           <button
             onClick={handleOpenCustomModal}
-            className="rounded-xl border border-slate-800 bg-slate-900/60 hover:bg-slate-900 hover:border-cyan-500/30 px-3.5 py-2.5 text-[10px] font-bold text-cyan-400 hover:text-cyan-300 transition-colors uppercase tracking-wider"
+            className="rounded-xl border border-slate-800 bg-slate-900/60 hover:bg-slate-900 hover:border-violet-500/30 px-3.5 py-2.5 text-[10px] font-bold text-violet-400 transition-colors uppercase tracking-wider"
           >
-            ✍️ Edit Board
+            ✍️ Edit
           </button>
           
           <button
             onClick={handleResetBoard}
             className="rounded-xl border border-slate-800 bg-slate-900/40 hover:bg-slate-900 hover:border-rose-500/20 px-3.5 py-2.5 text-[10px] font-bold text-slate-400 hover:text-slate-200 transition-colors uppercase tracking-wider"
           >
-            Shuffle Board
+            Shuffle
           </button>
         </div>
       </div>
+
+      {/* ─── 3D Achievement Cube (Microservice :8084) ─────────────── */}
+      {(viewMode === '3D' || viewMode === 'SPLIT') && trackerNodes.length > 0 && (
+        <Tracker3DCanvas
+          achievementNodes={trackerNodes}
+          checkedIds={new Set(
+            trackerNodes
+              .filter((_, i) => checkedIds.has(board[i]?.id))
+              .map(n => n.id)
+              .concat(trackerNodes.find(n => n.isSpecial)?.id ? [trackerNodes.find(n => n.isSpecial).id] : [])
+          )}
+          onToggleNode={(nodeId) => {
+            const nodeIdx = trackerNodes.findIndex(n => n.id === nodeId);
+            if (nodeIdx >= 0 && board[nodeIdx]) {
+              handleTileClick(board[nodeIdx].id);
+            }
+          }}
+        />
+      )}
 
       {/* ─── Bingo Win Celebration banner ─────────────────────────── */}
       {hasWon && (

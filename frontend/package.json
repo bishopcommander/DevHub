@@ -4,26 +4,30 @@
   "private": true,
   "description": "DevHub - Developer Analytics Platform Frontend",
   "dependencies": {
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.18.0",
+    "@tanstack/react-query": "^5.0.0",
+    "axios": "^1.6.0",
+    "clsx": "^2.0.0",
+    "date-fns": "^2.30.0",
+    "lucide-react": "^1.28.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.16.0",
-    "axios": "^1.6.0",
-    "@tanstack/react-query": "^5.0.0",
+    "react-toastify": "^9.1.0",
     "recharts": "^2.10.0",
-    "zustand": "^4.4.0",
-    "date-fns": "^2.30.0",
-    "clsx": "^2.0.0",
-    "react-toastify": "^9.1.0"
+    "three": "^0.160.1",
+    "zustand": "^4.4.0"
   },
   "devDependencies": {
-    "vite": "^5.0.0",
     "@vitejs/plugin-react": "^4.0.0",
-    "tailwindcss": "^3.4.13",
-    "postcss": "^8.4.47",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.50.0",
     "eslint-config-react-app": "^7.0.0",
-    "prettier": "^3.0.0"
+    "postcss": "^8.4.47",
+    "prettier": "^3.0.0",
+    "tailwindcss": "^3.4.13",
+    "vite": "^5.0.0"
   },
   "scripts": {
     "dev": "vite",

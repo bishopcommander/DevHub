@@ -3,6 +3,7 @@ import Card from '../ui/Card';
 import { useAuth } from '../../context/AuthContext';
 import { useGitHubAnalyzer } from '../../hooks/useGitHubAnalyzer';
 import { getStackSuggestion } from '../../api/devhubApi';
+import StackDecider3DCanvas from './StackDecider3DCanvas';
 
 const PROJECT_TEMPLATES = [
   {
@@ -36,11 +37,11 @@ const PROJECT_TEMPLATES = [
 ];
 
 const LOADING_PHRASES = [
+  'Connecting to Stack Decider Microservice (:8082)...',
   'Analyzing project keywords...',
   'Evaluating complexity metrics...',
+  'Rendering 3D Tech Constellation...',
   'De-scaling Kubernetes clusters...',
-  'Stripping away microservice boilerplate...',
-  'Calculating real production costs...',
   'Consulting anti-overengineering guidelines...',
   'Formulating realistic suggestions...'
 ];
@@ -55,6 +56,9 @@ const StackDecider = ({ setActive }) => {
   const [loadingPhrase, setLoadingPhrase] = useState(LOADING_PHRASES[0]);
   const [error, setError] = useState('');
   const [result, setResult] = useState(null);
+  
+  const [viewMode, setViewMode] = useState('SPLIT');
+  const [selected3DNode, setSelected3DNode] = useState(null);
 
   // Rotate loading phrases when active
   useEffect(() => {
@@ -86,6 +90,7 @@ const StackDecider = ({ setActive }) => {
     setLoading(true);
     setError('');
     setResult(null);
+    setSelected3DNode(null);
 
     try {
       const response = await getStackSuggestion({
@@ -96,21 +101,21 @@ const StackDecider = ({ setActive }) => {
       setResult(response);
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || 'Failed to fetch suggestions. Please check if the backend is running.');
+      setError(err.response?.data?.message || 'Failed to fetch suggestions. Please check if the Microservice is running.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="space-y-6 p-4 sm:p-6 max-w-6xl mx-auto">
+    <div className="space-y-6 p-4 sm:p-6 max-w-7xl mx-auto">
       
       {/* ─── Breadcrumbs / Back navigation ────────────────────────── */}
       {setActive && (
         <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500">
           <button 
             onClick={() => setActive('overview')} 
-            className="hover:text-cyan-405 transition-colors flex items-center gap-1.5"
+            className="hover:text-indigo-400 transition-colors flex items-center gap-1.5"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="h-3.5 w-3.5">
               <path d="M19 12H5" />
@@ -119,30 +124,64 @@ const StackDecider = ({ setActive }) => {
             Dashboard
           </button>
           <span>/</span>
-          <span className="text-slate-400">Stack Decider</span>
+          <span className="text-slate-400">Microservice Features</span>
+          <span>/</span>
+          <span className="text-indigo-400 font-bold">Opinionated Stack Decider (3D)</span>
         </nav>
       )}
       
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/40 p-6 sm:p-8 shadow-2xl">
-        <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-cyan-500/10 blur-[100px] pointer-events-none" />
-        <div className="absolute -left-20 -bottom-20 h-48 w-48 rounded-full bg-blue-600/5 blur-[90px] pointer-events-none" />
+      <div className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-slate-900/60 p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
+        <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-indigo-500/10 blur-[100px] pointer-events-none" />
+        <div className="absolute -left-20 -bottom-20 h-48 w-48 rounded-full bg-cyan-600/10 blur-[90px] pointer-events-none" />
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="rounded-full bg-cyan-500/10 border border-cyan-500/30 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-cyan-400">
-                Architect Mode
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="rounded-full bg-indigo-500/10 border border-indigo-500/30 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-indigo-400">
+                Microservice Feature #2
+              </span>
+              <span className="rounded-full bg-emerald-500/10 border border-emerald-500/40 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                Port :8082 Active
               </span>
             </div>
-            <h1 className="text-2xl font-extrabold text-white mt-2 tracking-tight sm:text-3xl">
+            <h1 className="text-2xl font-extrabold text-white mt-3 tracking-tight sm:text-3xl">
               Opinionated Stack Decider ⚡
             </h1>
             <p className="text-sm text-slate-400 mt-2 max-w-2xl leading-relaxed">
-              Describe your project idea, and we'll suggest a realistic tech stack. Our primary goal is to help you bypass developer graves and avoid building overengineered setups on day one.
+              Describe your project idea, and we'll suggest a realistic tech stack. Visualize your architecture with the new 3D Tech Constellation.
             </p>
           </div>
           
+          {/* View Mode Selector Tabs */}
+          <div className="flex items-center gap-1 rounded-xl bg-slate-950/80 p-1.5 border border-slate-800 self-start md:self-auto">
+            <button
+              onClick={() => setViewMode('SPLIT')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                viewMode === 'SPLIT' ? 'bg-indigo-500 text-slate-950 shadow-md shadow-indigo-500/20' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              📐 Split 3D View
+            </button>
+            <button
+              onClick={() => setViewMode('3D_ONLY')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                viewMode === '3D_ONLY' ? 'bg-indigo-500 text-slate-950 shadow-md shadow-indigo-500/20' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              🌌 Full 3D Galaxy
+            </button>
+            <button
+              onClick={() => setViewMode('ANALYTICS')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                viewMode === 'ANALYTICS' ? 'bg-indigo-500 text-slate-950 shadow-md shadow-indigo-500/20' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              📄 Text Report
+            </button>
+          </div>
+
           <div className="flex-shrink-0 bg-slate-950/60 p-4 rounded-2xl border border-slate-800/80 max-w-xs">
             <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">GitHub Tech Profile</h3>
             {user?.githubConnected ? (
@@ -261,11 +300,21 @@ const StackDecider = ({ setActive }) => {
         {/* Right Column: Loading / Results */}
         <div className="md:col-span-2 space-y-6">
           
-          {loading && (
-            <div className="rounded-3xl border border-slate-800/80 bg-slate-900/30 p-12 flex flex-col items-center justify-center min-h-[480px]">
+          {/* 3D Galaxy Canvas Scene */}
+          {(viewMode === 'SPLIT' || viewMode === '3D_ONLY') && (
+            <StackDecider3DCanvas
+              isLoading={loading}
+              galaxyNodes={result?.visual3dGalaxyNodes || []}
+              selectedNode={selected3DNode}
+              onSelectNode={(node) => setSelected3DNode(node)}
+            />
+          )}
+
+          {viewMode !== '3D_ONLY' && loading && (
+            <div className="rounded-3xl border border-slate-800/80 bg-slate-900/30 p-12 flex flex-col items-center justify-center min-h-[300px]">
               <div className="relative flex items-center justify-center">
-                <div className="h-16 w-16 animate-spin rounded-full border-[3px] border-cyan-400 border-t-transparent" />
-                <div className="absolute h-10 w-10 animate-ping rounded-full border border-cyan-500/30" />
+                <div className="h-16 w-16 animate-spin rounded-full border-[3px] border-indigo-400 border-t-transparent" />
+                <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-indigo-400 font-mono">8082</div>
               </div>
               <p className="mt-6 text-sm font-bold text-white tracking-wide animate-pulse">
                 {loadingPhrase}
@@ -274,19 +323,17 @@ const StackDecider = ({ setActive }) => {
             </div>
           )}
 
-          {!loading && !result && (
-            <div className="rounded-3xl border border-slate-800/60 bg-slate-950/15 p-12 flex flex-col items-center justify-center min-h-[480px] text-center border-dashed">
-              <div className="h-12 w-12 rounded-2xl bg-slate-900/80 border border-slate-800 grid place-content-center text-xl shadow-lg">
-                📋
-              </div>
-              <h3 className="text-base font-bold text-slate-300 mt-4">Waiting for Project Idea</h3>
+          {viewMode !== '3D_ONLY' && !loading && !result && (
+            <div className="rounded-3xl border border-slate-800/60 bg-slate-950/15 p-12 flex flex-col items-center justify-center min-h-[300px] text-center border-dashed">
+              <div className="text-4xl select-none animate-bounce">🌌</div>
+              <h3 className="text-base font-bold text-slate-300 mt-4">Interactive 3D Tech Galaxy Ready</h3>
               <p className="text-xs text-slate-500 mt-2 max-w-sm leading-relaxed">
-                Describe your project or click one of the templates on the left to see our opinionated stack suggestions and overengineering warnings.
+                Describe your project or click one of the templates to see our microservice-generated opinionated stack suggestions mapped into a 3D constellation.
               </p>
             </div>
           )}
 
-          {result && (
+          {viewMode !== '3D_ONLY' && result && (
             <div className="space-y-6 animate-fadeIn">
               
               {/* Complexity Banner */}
