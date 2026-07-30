@@ -1,8 +1,0 @@
-com\devhub\analytics\dto\DashboardResponse$FocusPoint.class
-com\devhub\analytics\dto\DashboardResponse$MusicWidget.class
-com\devhub\analytics\controller\DashboardController.class
-com\devhub\analytics\dto\DashboardResponse.class
-com\devhub\analytics\service\DashboardService.class
-com\devhub\analytics\DashboardAnalyticsServiceApplication.class
-com\devhub\analytics\dto\DashboardResponse$Bar3DNode.class
-com\devhub\analytics\dto\DashboardResponse$StatItem.class
