@@ -93,32 +93,32 @@ export default function StackDecider3DCanvas({
   onSelectNode = () => {}
 }) {
   return (
-    <div className="relative w-full h-[420px] rounded-2xl overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border border-indigo-500/20 shadow-2xl shadow-indigo-950/40">
+    <div className="relative w-full h-[420px] rounded-2xl overflow-hidden bg-gradient-to-b from-stone-950 via-stone-900 to-stone-950 border border-emerald-500/20 shadow-2xl shadow-stone-950/80">
       
       {/* Badge */}
-      <div className="absolute top-4 left-4 z-10 flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-900/80 backdrop-blur-md border border-indigo-500/30 text-xs font-mono text-indigo-300">
-        <span className={`w-2.5 h-2.5 rounded-full ${isLoading ? 'bg-indigo-400 animate-ping' : 'bg-emerald-400 animate-pulse'}`} />
+      <div className="absolute top-4 left-4 z-10 flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-stone-900/80 backdrop-blur-md border border-emerald-500/30 text-xs font-mono text-emerald-300">
+        <span className={`w-2.5 h-2.5 rounded-full ${isLoading ? 'bg-emerald-400 animate-ping' : 'bg-emerald-400 animate-pulse'}`} />
         <span>{isLoading ? 'CALCULATING ORBITS...' : 'TECH GALAXY RENDERED'}</span>
       </div>
 
-      <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 rounded-lg bg-slate-900/70 backdrop-blur-md border border-slate-700 text-[11px] text-slate-400 font-mono">
+      <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 rounded-lg bg-stone-900/70 backdrop-blur-md border border-stone-800 text-[11px] text-stone-400 font-mono">
         🖱️ Drag to orbit • Scroll to zoom
       </div>
 
       {selectedNode && (
-        <div className="absolute bottom-4 left-4 z-10 p-3.5 rounded-xl bg-slate-900/90 backdrop-blur-xl border border-indigo-500/40 shadow-xl text-left min-w-[200px]">
+        <div className="absolute bottom-4 left-4 z-10 p-3.5 rounded-xl bg-stone-900/90 backdrop-blur-xl border border-emerald-500/40 shadow-xl text-left min-w-[200px]">
           <div className="flex items-center gap-2 mb-1">
-            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: selectedNode.color || '#38bdf8' }} />
-            <p className="text-xs font-bold text-slate-100">{selectedNode.name}</p>
+            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: selectedNode.color || '#10b981' }} />
+            <p className="text-xs font-bold text-stone-100">{selectedNode.name}</p>
           </div>
-          <p className="text-[10px] text-slate-400 uppercase tracking-wider">{selectedNode.category} Layer</p>
+          <p className="text-[10px] text-stone-400 uppercase tracking-wider">{selectedNode.category} Layer</p>
         </div>
       )}
 
       <Canvas camera={{ position: [0, 2, 8], fov: 50 }}>
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} intensity={1} color="#ffffff" />
-        <directionalLight position={[-5, 5, 5]} intensity={0.5} color="#818cf8" />
+        <directionalLight position={[-5, 5, 5]} intensity={0.5} color="#10b981" />
         
         <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={isLoading ? 3 : 1} />
 

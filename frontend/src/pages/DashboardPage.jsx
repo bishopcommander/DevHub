@@ -35,7 +35,7 @@ const DashboardPage = () => {
 
   return (
     <MusicProvider>
-      <div className="min-h-screen bg-slate-950 text-slate-100 overflow-x-hidden relative">
+      <div className="min-h-screen bg-stone-950 text-stone-100 overflow-x-hidden relative">
         <div className="grid min-h-screen lg:grid-cols-[260px_1fr]">
           {/* Desktop Sidebar (always visible on lg screen) */}
           <div className="hidden lg:block">
@@ -46,7 +46,7 @@ const DashboardPage = () => {
             <DashboardTopbar onToggleSidebar={() => setIsSidebarOpen(true)} />
             
             {isError && (
-              <div className="mx-4 mt-4 rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-200 sm:mx-6">
+              <div className="mx-4 mt-4 rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-200 sm:mx-6 font-mono">
                 Backend unavailable, showing fallback dashboard data.
               </div>
             )}
@@ -60,13 +60,13 @@ const DashboardPage = () => {
         {/* Mobile Sidebar Backdrop Overlay */}
         {isSidebarOpen && (
           <div 
-            className="fixed inset-0 z-45 bg-slate-950/70 backdrop-blur-sm lg:hidden transition-opacity duration-300"
+            className="fixed inset-0 z-45 bg-stone-950/80 backdrop-blur-sm lg:hidden transition-opacity duration-300"
             onClick={() => setIsSidebarOpen(false)}
           />
         )}
 
         {/* Mobile Sidebar Sliding Drawer */}
-        <div className={`fixed bottom-0 top-0 left-0 z-50 w-[260px] transform bg-slate-950 transition-transform duration-300 ease-in-out lg:hidden border-r border-slate-800 ${
+        <div className={`fixed bottom-0 top-0 left-0 z-50 w-[260px] transform bg-stone-950 transition-transform duration-300 ease-in-out lg:hidden border-r border-stone-800 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}>
           <DashboardSidebar 

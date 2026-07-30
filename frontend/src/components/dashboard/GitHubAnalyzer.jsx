@@ -28,13 +28,13 @@ const REASON_METADATA = {
 };
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
-const StatCard = ({ label, value, sub, accent = 'cyan' }) => {
-  const accentMap = { cyan: 'text-cyan-400', indigo: 'text-indigo-400', emerald: 'text-emerald-400', rose: 'text-rose-400', amber: 'text-amber-400' };
+const StatCard = ({ label, value, sub, accent = 'amber' }) => {
+  const accentMap = { cyan: 'text-amber-400', indigo: 'text-amber-300', emerald: 'text-emerald-400', rose: 'text-rose-400', amber: 'text-amber-400' };
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 flex flex-col gap-1">
-      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{label}</p>
-      <p className={`text-2xl font-extrabold ${accentMap[accent] || 'text-cyan-400'}`}>{value}</p>
-      {sub && <p className="text-[11px] text-slate-500">{sub}</p>}
+    <div className="rounded-2xl border border-stone-800 bg-stone-900/60 p-4 flex flex-col gap-1">
+      <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-stone-500">{label}</p>
+      <p className={`text-2xl font-extrabold ${accentMap[accent] || 'text-amber-400'}`}>{value}</p>
+      {sub && <p className="text-[11px] text-stone-500">{sub}</p>}
     </div>
   );
 };
@@ -42,10 +42,10 @@ const StatCard = ({ label, value, sub, accent = 'cyan' }) => {
 const InsightCard = ({ text }) => {
   const parts = text.split(/\*\*(.*?)\*\*/g);
   return (
-    <div className="rounded-xl border border-slate-800/60 bg-slate-900/40 px-4 py-3 text-sm text-slate-300 leading-relaxed">
+    <div className="rounded-xl border border-stone-800/60 bg-stone-900/40 px-4 py-3 text-sm text-stone-300 leading-relaxed font-light">
       {parts.map((part, i) =>
         i % 2 === 1
-          ? <span key={i} className="font-bold text-white">{part}</span>
+          ? <span key={i} className="font-bold text-amber-300">{part}</span>
           : <span key={i}>{part}</span>
       )}
     </div>
@@ -253,12 +253,12 @@ const GitHubAnalyzer = ({ setActive }) => {
   // ── Loading state ──
   if (loading) {
     return (
-      <div className="p-4 sm:p-6">
+      <div className="p-4 sm:p-6 bg-[#090807] min-h-screen">
         <div className="mb-6 flex items-center gap-3">
-          <div className="h-9 w-9 animate-spin rounded-full border-[3px] border-cyan-400 border-t-transparent" />
+          <div className="h-9 w-9 animate-spin rounded-full border-[3px] border-amber-400 border-t-transparent" />
           <div>
-            <p className="text-sm font-semibold text-slate-200">Analyzing GitHub profile…</p>
-            <p className="text-[11px] text-slate-500 font-mono">Fetching repos, commits & patterns for @{user.githubUsername}</p>
+            <p className="text-sm font-semibold text-stone-200">Analyzing GitHub profile…</p>
+            <p className="text-[11px] text-stone-500 font-mono">Fetching repos, commits & patterns for @{user.githubUsername}</p>
           </div>
         </div>
         <LoadingSkeleton />
@@ -619,14 +619,14 @@ const GitHubAnalyzer = ({ setActive }) => {
 
   // ─── Regular GitHub Analyzer Layout ────────────────────────────────────────
   return (
-    <div className="space-y-6 p-4 sm:p-6">
+    <div className="space-y-6 p-4 sm:p-6 bg-[#090807] min-h-screen text-stone-100 font-sans">
       
       {/* ─── Breadcrumbs / Back navigation ────────────────────────── */}
       {setActive && (
-        <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+        <nav className="flex items-center gap-2 text-xs font-mono font-semibold text-stone-500">
           <button 
             onClick={() => setActive('overview')} 
-            className="hover:text-cyan-405 transition-colors flex items-center gap-1.5"
+            className="hover:text-amber-400 transition-colors flex items-center gap-1.5"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="h-3.5 w-3.5">
               <path d="M19 12H5" />
@@ -635,7 +635,7 @@ const GitHubAnalyzer = ({ setActive }) => {
             Dashboard
           </button>
           <span>/</span>
-          <span className="text-slate-400">GitHub Analyzer</span>
+          <span className="text-stone-400">GitHub Analyzer</span>
         </nav>
       )}
 
@@ -645,25 +645,25 @@ const GitHubAnalyzer = ({ setActive }) => {
           <img
             src={profile.avatar_url}
             alt={profile.login}
-            className="h-14 w-14 rounded-2xl border-2 border-cyan-500/30 object-cover shadow-lg shadow-cyan-500/10"
+            className="h-14 w-14 rounded-2xl border-2 border-amber-500/30 object-cover shadow-lg shadow-amber-500/10"
           />
           <div>
-            <h2 className="text-xl font-bold text-white">{profile.name || profile.login}</h2>
+            <h2 className="text-xl font-bold text-stone-100">{profile.name || profile.login}</h2>
             <a
               href={profile.html_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-mono text-cyan-400 hover:underline"
+              className="text-xs font-mono text-amber-400 hover:underline"
             >
               @{profile.login}
             </a>
-            {profile.bio && <p className="mt-0.5 text-xs text-slate-400 max-w-sm">{profile.bio}</p>}
+            {profile.bio && <p className="mt-0.5 text-xs text-stone-400 max-w-sm font-light">{profile.bio}</p>}
           </div>
         </div>
         <button
           onClick={refetch}
           title="Refresh analysis"
-          className="rounded-xl border border-slate-800 bg-slate-900 p-2.5 text-slate-400 hover:text-cyan-400 hover:border-cyan-500/30 transition-colors"
+          className="rounded-xl border border-stone-800 bg-stone-900 p-2.5 text-stone-400 hover:text-amber-400 hover:border-amber-500/30 transition-colors"
         >
           <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -673,31 +673,31 @@ const GitHubAnalyzer = ({ setActive }) => {
 
       {/* ── Stat cards ───────────────────────────────────────────── */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <StatCard label="Public Repos" value={totalRepos} sub={`${data.totalForks} forks`} accent="cyan" />
+        <StatCard label="Public Repos" value={totalRepos} sub={`${data.totalForks} forks`} accent="amber" />
         <StatCard label="Total Stars" value={totalStars} sub="across all repos" accent="amber" />
-        <StatCard label="Commits Analyzed" value={totalCommitsAnalyzed} sub="last 5 active repos" accent="indigo" />
+        <StatCard label="Commits Analyzed" value={totalCommitsAnalyzed} sub="last 5 active repos" accent="amber" />
         <StatCard label="Followers" value={profile.followers ?? '—'} sub={`${profile.following ?? 0} following`} accent="emerald" />
       </div>
 
       {/* ── Insights ─────────────────────────────────────────────── */}
       <div>
-        <h3 className="mb-3 text-xs font-bold uppercase tracking-widest text-slate-500">Developer Insights</h3>
+        <h3 className="mb-3 text-xs font-mono font-bold uppercase tracking-widest text-stone-500">Developer Insights</h3>
         <div className="grid gap-2 sm:grid-cols-2">
           {insights.map((text, i) => <InsightCard key={i} text={text} />)}
         </div>
       </div>
 
       {/* ── Commit activity chart ─────────────────────────────────── */}
-      <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+      <div className="rounded-2xl border border-stone-800 bg-stone-900/60 p-5">
         <div className="mb-4 flex items-center justify-between gap-3 flex-wrap">
-          <h3 className="text-sm font-semibold text-slate-100">Commit Activity</h3>
-          <div className="flex gap-1 rounded-lg bg-slate-950/60 p-1 border border-slate-800">
+          <h3 className="text-sm font-bold text-stone-100">Commit Activity</h3>
+          <div className="flex gap-1 rounded-lg bg-stone-950/60 p-1 border border-stone-800">
             {['hourly', 'daily', 'weekly'].map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveChart(tab)}
-                className={`rounded-md px-3 py-1 text-[10px] font-bold uppercase tracking-wide transition-all ${
-                  activeChart === tab ? 'bg-cyan-400 text-slate-950' : 'text-slate-500 hover:text-slate-300'
+                className={`rounded-md px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-wide transition-all ${
+                  activeChart === tab ? 'bg-amber-500 text-stone-950' : 'text-stone-500 hover:text-stone-300'
                 }`}
               >
                 {tab}
@@ -708,24 +708,24 @@ const GitHubAnalyzer = ({ setActive }) => {
         <div className="h-48">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} margin={{ top: 0, right: 0, bottom: 0, left: -20 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#292524" vertical={false} />
               <XAxis
                 dataKey={chartKey}
-                stroke="#475569"
-                tick={{ fontSize: 10, fill: '#475569' }}
+                stroke="#57534e"
+                tick={{ fontSize: 10, fill: '#78716c' }}
                 interval="preserveStartEnd"
               />
-              <YAxis stroke="#475569" tick={{ fontSize: 10, fill: '#475569' }} />
+              <YAxis stroke="#57534e" tick={{ fontSize: 10, fill: '#78716c' }} />
               <Tooltip
-                contentStyle={{ background: '#0f172a', border: '1px solid #1e293b', borderRadius: 12, color: '#e2e8f0', fontSize: 12 }}
-                cursor={{ fill: 'rgba(34,211,238,0.06)' }}
+                contentStyle={{ background: '#1c1917', border: '1px solid #292524', borderRadius: 12, color: '#f59e0b', fontSize: 12 }}
+                cursor={{ fill: 'rgba(245,158,11,0.06)' }}
               />
-              <Bar dataKey="commits" fill="#22d3ee" radius={[4, 4, 0, 0]} maxBarSize={32} />
+              <Bar dataKey="commits" fill="#f59e0b" radius={[4, 4, 0, 0]} maxBarSize={32} />
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <p className="mt-2 text-center text-[10px] text-slate-600">
-          Peak: <span className="text-cyan-400 font-semibold">{patterns.peakDay}</span> · Favorite time: <span className="text-cyan-400 font-semibold">{patterns.timeLabel}</span>
+        <p className="mt-2 text-center text-[10px] text-stone-500 font-mono">
+          Peak: <span className="text-amber-400 font-bold">{patterns.peakDay}</span> · Favorite time: <span className="text-amber-400 font-bold">{patterns.timeLabel}</span>
         </p>
       </div>
 

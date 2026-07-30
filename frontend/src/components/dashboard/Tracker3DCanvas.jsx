@@ -86,27 +86,27 @@ export default function Tracker3DCanvas({
   ).length;
 
   return (
-    <div className="relative w-full h-[420px] rounded-2xl overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-violet-950/20 border border-violet-500/20 shadow-2xl">
+    <div className="relative w-full h-[420px] rounded-2xl overflow-hidden bg-gradient-to-br from-stone-950 via-stone-900 to-amber-950/20 border border-amber-500/20 shadow-2xl">
       {/* Badge */}
-      <div className="absolute top-4 left-4 z-10 flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-900/80 backdrop-blur-md border border-violet-500/30 text-xs font-mono text-violet-300">
-        <span className="w-2.5 h-2.5 rounded-full bg-violet-400 animate-pulse" />
+      <div className="absolute top-4 left-4 z-10 flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-stone-900/80 backdrop-blur-md border border-amber-500/30 text-xs font-mono text-amber-300">
+        <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
         <span>3D ACHIEVEMENT CUBE</span>
       </div>
 
       {/* Progress Badge */}
-      <div className="absolute top-4 right-4 z-10 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 backdrop-blur-md border border-amber-500/30 text-xs font-mono text-amber-300">
+      <div className="absolute top-4 right-4 z-10 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-stone-900/80 backdrop-blur-md border border-emerald-500/30 text-xs font-mono text-emerald-300">
         <span>✨</span>
         <span>{completedCount}/{achievementNodes.length} cells lit</span>
       </div>
 
-      <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 rounded-lg bg-slate-900/70 backdrop-blur-md border border-slate-700 text-[11px] text-slate-400 font-mono">
+      <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 rounded-lg bg-stone-900/70 backdrop-blur-md border border-stone-800 text-[11px] text-stone-400 font-mono">
         🖱️ Click cells • Drag to orbit
       </div>
 
       <Canvas camera={{ position: [0, 3, 9], fov: 50 }}>
         <ambientLight intensity={0.3} />
         <pointLight position={[0, 8, 0]} intensity={1} color="#ffffff" />
-        <pointLight position={[-5, 0, 5]} intensity={0.5} color="#818cf8" />
+        <pointLight position={[-5, 0, 5]} intensity={0.5} color="#f59e0b" />
         <pointLight position={[5, 0, -5]} intensity={0.5} color="#10b981" />
 
         <Sparkles
@@ -115,7 +115,7 @@ export default function Tracker3DCanvas({
           size={2}
           speed={0.3}
           opacity={0.3}
-          color="#a855f7"
+          color="#f59e0b"
         />
 
         <Float speed={0.5} rotationIntensity={0.1} floatIntensity={0.3}>

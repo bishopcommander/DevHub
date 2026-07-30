@@ -19,8 +19,8 @@ function CoreNode({ isAnalyzing, label }) {
       <mesh ref={meshRef} position={[0, 0, 0]}>
         <icosahedronGeometry args={[1.1, 2]} />
         <MeshDistortMaterial
-          color={isAnalyzing ? '#06b6d4' : '#3b82f6'}
-          emissive={isAnalyzing ? '#22d3ee' : '#1d4ed8'}
+          color={isAnalyzing ? '#f59e0b' : '#d97706'}
+          emissive={isAnalyzing ? '#fbbf24' : '#b45309'}
           emissiveIntensity={isAnalyzing ? 0.8 : 0.4}
           roughness={0.2}
           metalness={0.8}
@@ -32,7 +32,7 @@ function CoreNode({ isAnalyzing, label }) {
       <Text
         position={[0, 1.6, 0]}
         fontSize={0.28}
-        color="#f8fafc"
+        color="#fef3c7"
         anchorX="center"
         anchorY="middle"
         font="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyeMZhrib2Bg-4.ttf"
@@ -51,7 +51,7 @@ function ParticleField({ isAnalyzing }) {
   const [positions, colors] = useMemo(() => {
     const pos = new Float32Array(count * 3);
     const col = new Float32Array(count * 3);
-    const colorChoices = ['#38bdf8', '#818cf8', '#34d399', '#f472b6'];
+    const colorChoices = ['#f59e0b', '#10b981', '#f43f5e', '#fbbf24'];
 
     for (let i = 0; i < count; i++) {
       pos[i * 3] = (Math.random() - 0.5) * 22;
@@ -112,7 +112,7 @@ function GraphNode3D({ node, onSelectNode, isSelected }) {
   });
 
   const pos = node.position3d || [0, 0, 0];
-  const nodeColor = node.color || '#38bdf8';
+  const nodeColor = node.color || '#f59e0b';
 
   return (
     <group position={pos}>
@@ -147,7 +147,7 @@ function GraphNode3D({ node, onSelectNode, isSelected }) {
       <Text
         position={[0, 0.55, 0]}
         fontSize={0.22}
-        color={hovered || isSelected ? '#ffffff' : '#cbd5e1'}
+        color={hovered || isSelected ? '#ffffff' : '#e7e5e4'}
         anchorX="center"
         anchorY="bottom"
       >
@@ -173,37 +173,37 @@ export default function CodeExplainer3DCanvas({
   onSelectNode = () => {}
 }) {
   return (
-    <div className="relative w-full h-[420px] rounded-2xl overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border border-cyan-500/20 shadow-2xl shadow-cyan-950/40">
+    <div className="relative w-full h-[420px] rounded-2xl overflow-hidden bg-gradient-to-b from-stone-950 via-stone-900 to-stone-950 border border-amber-500/20 shadow-2xl shadow-stone-950/80">
       {/* Status Overlay Badge */}
-      <div className="absolute top-4 left-4 z-10 flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-900/80 backdrop-blur-md border border-cyan-500/30 text-xs font-mono text-cyan-300">
-        <span className={`w-2.5 h-2.5 rounded-full ${isAnalyzing ? 'bg-cyan-400 animate-ping' : 'bg-emerald-400 animate-pulse'}`} />
+      <div className="absolute top-4 left-4 z-10 flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-stone-900/80 backdrop-blur-md border border-amber-500/30 text-xs font-mono text-amber-300">
+        <span className={`w-2.5 h-2.5 rounded-full ${isAnalyzing ? 'bg-amber-400 animate-ping' : 'bg-emerald-400 animate-pulse'}`} />
         <span>{isAnalyzing ? 'AST MATRIX SCANNING...' : '3D HOLOGRAPHIC AST READY'}</span>
       </div>
 
       {/* Control Hint */}
-      <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 rounded-lg bg-slate-900/70 backdrop-blur-md border border-slate-700 text-[11px] text-slate-400 font-mono">
+      <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 rounded-lg bg-stone-900/70 backdrop-blur-md border border-stone-800 text-[11px] text-stone-400 font-mono">
         🖱️ Drag to rotate • Scroll to zoom • Click nodes
       </div>
 
       {/* Selected Node Details Floating Tooltip */}
       {selectedNode && (
-        <div className="absolute bottom-4 left-4 z-10 max-w-xs p-3.5 rounded-xl bg-slate-900/90 backdrop-blur-xl border border-cyan-500/40 shadow-xl text-left transition-all duration-300">
+        <div className="absolute bottom-4 left-4 z-10 max-w-xs p-3.5 rounded-xl bg-stone-900/90 backdrop-blur-xl border border-amber-500/40 shadow-xl text-left transition-all duration-300">
           <div className="flex items-center gap-2 mb-1">
-            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: selectedNode.color || '#38bdf8' }} />
-            <p className="text-xs font-bold text-slate-100 font-mono">{selectedNode.label}</p>
-            <span className="ml-auto text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800/50">
+            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: selectedNode.color || '#f59e0b' }} />
+            <p className="text-xs font-bold text-stone-100 font-mono">{selectedNode.label}</p>
+            <span className="ml-auto text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-stone-950 text-amber-400 border border-amber-800/50">
               {selectedNode.nodeType}
             </span>
           </div>
-          <p className="text-xs text-slate-300 font-sans leading-relaxed">{selectedNode.details}</p>
+          <p className="text-xs text-stone-300 font-sans leading-relaxed">{selectedNode.details}</p>
         </div>
       )}
 
       {/* 3D R3F Canvas */}
       <Canvas camera={{ position: [0, 1, 7], fov: 50 }}>
         <ambientLight intensity={0.6} />
-        <pointLight position={[10, 10, 10]} intensity={1.5} color="#38bdf8" />
-        <pointLight position={[-10, -10, -10]} intensity={0.8} color="#a855f7" />
+        <pointLight position={[10, 10, 10]} intensity={1.5} color="#f59e0b" />
+        <pointLight position={[-10, -10, -10]} intensity={0.8} color="#10b981" />
         <directionalLight position={[0, 5, 5]} intensity={1} />
 
         <ParticleField isAnalyzing={isAnalyzing} />
